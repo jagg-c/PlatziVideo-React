@@ -11,7 +11,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const App = () => {
-    const [ video, setVideos ] = useState([]);
+    const [ videos, setVideos ] = useState([]);
 
     useEffect(() => {
         fetch('http://localhost:3000/initalState')
@@ -19,42 +19,30 @@ const App = () => {
             .then(data => setVideos(data));
     }, []);
 
-    console.log(video);
-
     return (
         <div className="App">
             <Header />
             <Search />
 
-            <Categories>
-                <Carousel>
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
-                </Carousel>
-            </Categories>
+            {videos.mylist?.length > 0 &&
+                <Categories title="Mi Lista">
+                    <Carousel>
+                        <CarouselItem />
+                    </Carousel>
+                </Categories>
+            }
 
-            <Categories>
+            <Categories title="Tendencias">
                 <Carousel>
-                    <CarouselItem />
-                    <CarouselItem />
-                    <CarouselItem />
+                    {videos.trends?.map(item => 
+                        <CarouselItem key={item.id} {...item} />
+                    )}
                 </Carousel>
             </Categories>
 
             <Footer />
         </div>
     );
-    }
+}
 
 export default App;
